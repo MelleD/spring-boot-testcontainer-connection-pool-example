@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: entity
+      comment: create entity
+      author: author
+      changes:
+        - createTable:
+            tableName: entity
+            columns:
+              - column:
+                  name: id
+                  autoIncrement: true
+                  type: int
+              - column:
+                  name: special_id
+                  type: int

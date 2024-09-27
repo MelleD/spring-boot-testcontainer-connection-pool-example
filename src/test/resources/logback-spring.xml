@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) 2023 Robert Bosch Manufacturing Solutions GmbH, Germany. All rights reserved.
+  -->
+<configuration>
+   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+
+   <property name="LOG_PATTERN"
+             value="%highlight([%-5level]) %clr([%-40.40logger{39}]){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+
+   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+         <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+   </appender>
+   <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+   </root>
+</configuration>
