@@ -1,7 +1,6 @@
-package com.test.issue1;
+package com.test.issue4;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,7 @@ import com.web.TestWebConfig;
       TestWebConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
 @ActiveProfiles( "test" )
 @EnableAutoConfiguration
-class ConnectionPoolIssueTest1 {
+class ConnectionPoolIssueTest6 {
 
    @Autowired
    private WebTestClient webTestClient;
@@ -40,8 +39,8 @@ class ConnectionPoolIssueTest1 {
                      .build() )
                .exchange()
                .expectStatus().isOk().expectBody( Integer.class ).returnResult().getResponseBody();
-         assertThat( count ).isZero();
+         Assertions.assertThat( count ).isZero();
       }
-
    }
+
 }

@@ -1,6 +1,8 @@
-package com.test.issue1;
+package com.test.issue4;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,9 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.test.config.SQLContainerConfiguration;
 import com.test.config.TestConfig;
@@ -21,10 +24,13 @@ import com.web.TestWebConfig;
       TestWebConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
 @ActiveProfiles( "test" )
 @EnableAutoConfiguration
-class ConnectionPoolIssueTest1 {
+class ConnectionPoolIssueTest5 {
 
    @Autowired
-   private WebTestClient webTestClient;
+   private JdbcTemplate jdbcTemplate;
+
+   @Autowired
+   private TransactionTemplate transactionTemplate;
 
    @BeforeEach
    void setup() throws InterruptedException {
@@ -33,15 +39,15 @@ class ConnectionPoolIssueTest1 {
    }
 
    @Test
-   void testConnection() {
+   void testConnection() throws SQLException {
       for ( int i = 0; i < 50; i++ ) {
-         Integer count = webTestClient.get().uri( uriBuilder -> uriBuilder.path(
-                           "/test" )
-                     .build() )
-               .exchange()
-               .expectStatus().isOk().expectBody( Integer.class ).returnResult().getResponseBody();
-         assertThat( count ).isZero();
+         transactionTemplate.execute( transactionTemplate -> {
+            int result = jdbcTemplate.queryForObject(
+                  "SELECT COUNT(*) FROM entity", Integer.class );
+            assertThat( result ).isZero();
+            return null;
+         } );
       }
-
    }
+
 }

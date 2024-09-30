@@ -15,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.test.RecreateLiquibaseContext;
 import com.test.config.SQLContainerConfiguration;
 import com.test.config.TestConfig;
 
@@ -23,7 +22,6 @@ import com.test.config.TestConfig;
 @SpringBootTest( classes = { TestConfig.class, SQLContainerConfiguration.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT )
 @ActiveProfiles( "test" )
 @EnableAutoConfiguration
-@RecreateLiquibaseContext
 class ConnectionPoolIssueTest4 {
 
    @Autowired
